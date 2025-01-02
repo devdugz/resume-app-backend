@@ -30,6 +30,7 @@ Education.find_or_create_by!(university_name: "Test University", degree: "BS Com
   edu.start_date = "2018"
   edu.end_date = "2022"
   edu.details = "Major in Computer Science, Minor in Mathematics"
+  edu.user_id = test_user.id
 end
 
 # Test experience entries
@@ -37,6 +38,7 @@ Experience.find_or_create_by!(company_name: "Test Corp", job_title: "Software En
   exp.start_date = "2022"
   exp.end_date = "Present"
   exp.details = "Full-stack development using Ruby on Rails and React"
+  exp.user_id = test_user.id
 end
 
 # Test projects
@@ -44,11 +46,14 @@ Project.find_or_create_by!(name: "Test Project") do |proj|
   proj.description = "A sample full-stack application"
   proj.url = "https://github.com/testuser/test-project"
   proj.screenshot = "https://via.placeholder.com/300"
+  proj.user_id = test_user.id
 end
 
 # Test skills
 ["Ruby", "Rails", "React", "JavaScript", "PostgreSQL"].each do |skill_name|
-  Skill.find_or_create_by!(skill_name: skill_name)
+  Skill.find_or_create_by!(skill_name: skill_name) do |skill|
+    skill.user_id = test_user.id
+  end
 end
 
 puts "Test data created successfully!"
