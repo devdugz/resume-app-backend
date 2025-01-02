@@ -1,9 +1,16 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user, except: [:create]
+  before_action :authenticate_user, except: [:create, :index, :show]
 
   def index
     @users = User.all
-    render json: @users
+    render json: @users.as_json(
+      include: {
+        experiences: {},
+        educations: {},
+        skills: {},
+        projects: {},
+      },
+    )
   end
 
   def show
