@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :educations
   resources :skills
   resources :experiences
+  resources :projects
 
   post "/sessions" => "sessions#create"
   delete "/sessions" => "sessions#destroy"

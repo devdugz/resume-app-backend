@@ -1,6 +1,14 @@
 require "test_helper"
 
 class SkillsControllerTest < ActionDispatch::IntegrationTest
+  def setup
+    super
+    @skill = Skill.create!(
+      skill_name: "Test Skill",
+      user_id: @user.id,
+    )
+  end
+
   test "index" do
     get "/skills.json"
     assert_response 200
@@ -11,32 +19,31 @@ class SkillsControllerTest < ActionDispatch::IntegrationTest
 
   test "create" do
     assert_difference "Skill.count", 1 do
-      post "/skills.json"
+      post "/skills.json", params: { skill_name: "New Skill" }
       assert_response 200
     end
+  end
 
-    test "show" do
-      get "/skills/#{Skill.first.id}.json"
+  test "show" do
+    get "/skills/#{@skill.id}.json"
+    assert_response 200
+
+    data = JSON.parse(response.body)
+    assert_equal ["id", "skill_name", "created_at", "updated_at", "user_id"], data.keys
+  end
+
+  test "update" do
+    patch "/skills/#{@skill.id}.json", params: { skill_name: "Updated Skill" }
+    assert_response 200
+
+    data = JSON.parse(response.body)
+    assert_equal "Updated Skill", data["skill_name"]
+  end
+
+  test "destroy" do
+    assert_difference "Skill.count", -1 do
+      delete "/skills/#{@skill.id}.json"
       assert_response 200
-
-      data = JSON.parse(response.body)
-      assert_equal ["id", "name", "created_at", "updated_at"], data.keys
-    end
-
-    test "update" do
-      skill = Skill.first
-      patch "/skills/#{photo.id}.json", params: { name: "Updated name" }
-      assert_response 200
-
-      data = JSON.parse(response.body)
-      assert_equal "Updated name", data["name"]
-    end
-
-    test "destroy" do
-      assert_difference "Skill.count", -1 do
-        delete "/skills/#{Skill.first.id}.json"
-        assert_response 200
-      end
     end
   end
 end

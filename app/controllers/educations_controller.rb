@@ -31,11 +31,11 @@ class EducationsController < ApplicationController
     @education = Education.find(params[:id])
     if @education.user_id == current_user.id
       if @education.update(
-        start_date: params[:start_date],
-        end_date: params[:end_date],
-        job_title: params[:job_title],
-        company_name: params[:company_name],
-        details: params[:details],
+        start_date: params[:start_date] || @education.start_date,
+        end_date: params[:end_date] || @education.end_date,
+        job_title: params[:job_title] || @education.job_title,
+        company_name: params[:company_name] || @education.company_name,
+        details: params[:details] || @education.details,
       )
         render json: @education
       else
