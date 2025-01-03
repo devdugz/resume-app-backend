@@ -63,4 +63,47 @@ class UsersController < ApplicationController
       render json: { errors: user.errors.full_messages }, status: :bad_request
     end
   end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.id == current_user.id
+      if @user.update(
+        first_name: params[:first_name],
+        last_name: params[:last_name],
+        email: params[:email],
+        password: params[:password],
+        phone_number: params[:phone_number],
+        short_bio: params[:short_bio],
+        linkedin_url: params[:linkedin_url],
+        twitter_handle: params[:twitter_handle],
+        website_url: params[:website_url],
+        online_resume_url: params[:online_resume_url],
+        github_url: params[:github_url],
+        photo: params[:photo],
+      )
+        render json: @user.as_json(
+          include: {
+            experiences: {},
+            educations: {},
+            skills: {},
+            projects: {},
+          },
+        )
+      else
+        render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "Unauthorized" }, status: :unauthorized
+    end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    if @user.id == current_user.id
+      @user.destroy
+      render json: { message: "User successfully deleted" }
+    else
+      render json: { error: "Unauthorized" }, status: :unauthorized
+    end
+  end
 end
