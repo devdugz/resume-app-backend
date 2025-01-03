@@ -26,7 +26,7 @@ class SkillsController < ApplicationController
   def update
     @skill = Skill.find(params[:id])
     if @skill.user_id == current_user.id
-      if @skill.update(skill_name: params[:skill_name])
+      if @skill.update(skill_name: params[:skill_name] || @skill.skill_name)
         render json: @skill
       else
         render json: { errors: @skill.errors.full_messages }, status: :unprocessable_entity
