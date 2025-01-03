@@ -71,7 +71,6 @@ class UsersController < ApplicationController
         first_name: params[:first_name] || @user.first_name,
         last_name: params[:last_name] || @user.last_name,
         email: params[:email] || @user.email,
-        password: params[:password] || @user.password,
         phone_number: params[:phone_number] || @user.phone_number,
         short_bio: params[:short_bio] || @user.short_bio,
         linkedin_url: params[:linkedin_url] || @user.linkedin_url,
