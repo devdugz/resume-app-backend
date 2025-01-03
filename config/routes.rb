@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   resources :users
   get "/current_user" => "users#current"
 
+  resources :educations
+  resources :skills
   resources :experiences
 
   post "/sessions" => "sessions#create"
